@@ -1,0 +1,30 @@
+global:
+  scrape_interval:     5s # fetch the metrics from the individual microservice containers every five seconds
+  evaluation_interval: 5s # using the metrics evaluate the data and graphs inside the Prometheus dashboards every five seconds.
+
+scrape_configs: # fetch the details of microservice instances, using which metrics can be fetched
+  - job_name: 'accounts'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'accounts:8080' ] # list of targets/instances running under this microservice.
+      #localhost is not mentioned because inside docker-compose file, the service name is mentioned as 'accounts'. As Prometheus is started using docker-compose inside the same network, it can interact with this instance based upon the service name.
+  - job_name: 'loans'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'loans:8090' ]
+  - job_name: 'cards'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'cards:9000' ]
+  - job_name: 'gatewayserver'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'gatewayserver:8072' ]
+  - job_name: 'eurekaserver'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'eurekaserver:8070' ]
+  - job_name: 'configserver'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'configserver:8071' ]

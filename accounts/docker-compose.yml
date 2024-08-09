@@ -1,0 +1,40 @@
+services:
+  accounts:
+    image: "sauravdaruka/accounts:s4"
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m # Restricting container memory so that other containers can use from remaining resources
+    networks:
+      - daruka_network
+
+  loans:
+    image: "sauravdaruka/loans:s4"
+    container_name: loans-ms
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m # Restricting container memory so that other containers can use from remaining resources
+    networks:
+      - daruka_network
+
+  cards:
+    image: "sauravdaruka/cards:s4"
+    container_name: cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m # Restricting container memory so that other containers can use from remaining resources
+    networks:
+      - daruka_network # Tagging a network "daruka_network" to cards microservice
+
+networks:
+  daruka_network:
+    driver: bridge # Creating a network "daruka_network"
