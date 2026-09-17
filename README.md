@@ -1,161 +1,47 @@
-
-````markdown
 # BankMicroservices
 
-A full-fledged microservices-based banking system built using **Spring Boot**, **Spring Cloud**, **Eureka**, **Zuul**, **JWT**, and **MySQL**. This project demonstrates a modular, scalable architecture suitable for real-world fintech applications.
+A Spring Boot microservices reference project for account, card, and loan capabilities. The repository demonstrates service decomposition, centralized configuration, service discovery, edge routing, asynchronous messaging, and containerized local execution.
 
----
+## Architecture
 
-## 🧩 Architecture Overview
+- **accounts** — account APIs and persistence
+- **cards** — card APIs and persistence
+- **loans** — loan APIs and persistence
+- **configserver** — centralized Spring Cloud configuration
+- **eurekaserver** — service registration and discovery
+- **gatewayserver** — API gateway and external entry point
+- **message** — messaging component used by the platform
+- **docker-compose** — local multi-service orchestration
 
-This project follows a **Microservices Architecture** and includes the following components:
+Client requests enter through the gateway. The gateway resolves registered services through Eureka, while each service loads shared configuration from the config server. Business capabilities remain independently deployable and own their service-specific data and logic.
 
-### Core Microservices
-- **Auth-Service**: Handles user authentication and JWT token generation.
-- **Account-Service**: Manages customer account operations (e.g., account creation, balance inquiry).
-- **Transaction-Service**: Handles credit/debit transactions between accounts.
+## Engineering focus
 
-### Supporting Services
-- **API Gateway (Zuul)**: Entry point to all microservices, routes requests, and applies filters.
-- **Service Discovery (Eureka Server)**: Registers and discovers services dynamically.
-- **Config Server** *(if applicable)*: Centralized configuration management for all services.
-  
----
+- Clear bounded services for accounts, cards, and loans
+- Centralized configuration with environment-specific settings
+- Runtime service discovery and gateway-based routing
+- Docker Compose for repeatable local startup
+- Spring Boot Actuator support for operational endpoints
+- Asynchronous integration through the message component
 
-## 🔐 Security
+## Technology
 
-- JWT-based authentication.
-- Role-based access control.
-- Auth-Service issues and validates tokens across services via request headers.
+Java, Spring Boot, Spring Cloud, Spring Data JPA, Maven, Eureka, API Gateway, Docker, and Docker Compose.
 
----
+## Run locally
 
-## 🧱 Tech Stack
+1. Clone the repository.
+2. Review configuration under each service and the ` docker-compose ` directory.
+3. Build the services with Maven.
+4. Start the stack using the Compose files in ` docker-compose `.
+5. Route API requests through ` gatewayserver ` after the services register with Eureka.
 
-| Layer                | Technology                             |
-|---------------------|----------------------------------------|
-| Core Framework      | Spring Boot, Spring Cloud              |
-| Service Discovery   | Eureka                                 |
-| API Gateway         | Zuul                                   |
-| Security            | Spring Security, JWT                   |
-| Database            | MySQL                                  |
-| ORM                 | Spring Data JPA                        |
-| Config Management   | Spring Cloud Config (optional)         |
-| Build Tool          | Maven                                  |
-| Testing             | JUnit, Mockito                         |
+> Configuration and exposed ports are defined in the repository files. Use those values rather than assumptions from older documentation.
 
----
+## Repository purpose
 
-## 🔧 Setup Instructions
+This is a learning and portfolio project focused on practical microservices patterns. It intentionally favors explicit service boundaries and observable infrastructure components over a single monolithic application.
 
-### Prerequisites
+## Author
 
-- Java 11+
-- Maven 3.6+
-- MySQL 8+
-- Postman (for testing APIs)
-
-### Steps
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/sauravdaruka/BankMicroservices.git
-   cd BankMicroservices
-````
-
-2. **Set up MySQL Database:**
-
-   * Create databases: `auth_db`, `account_db`, `transaction_db`
-   * Update database credentials in `application.properties` or `application.yml` in each microservice.
-
-3. **Run Eureka Server**
-
-   ```bash
-   cd discovery-server
-   mvn spring-boot:run
-   ```
-
-4. **Run Auth, Account, and Transaction Services**
-
-   ```bash
-   cd auth-service
-   mvn spring-boot:run
-
-   cd ../account-service
-   mvn spring-boot:run
-
-   cd ../transaction-service
-   mvn spring-boot:run
-   ```
-
-5. **Run API Gateway (Zuul)**
-
-   ```bash
-   cd api-gateway
-   mvn spring-boot:run
-   ```
-
-6. **Test API using Postman:**
-
-   * First, authenticate via `/auth/login`
-   * Use JWT token to call secure endpoints in account and transaction services
-
----
-
-## 🔍 Sample API Endpoints
-
-### Authentication
-
-```http
-POST /auth/login
-```
-
-```json
-{
-  "username": "john",
-  "password": "password"
-}
-```
-
-### Account Operations (via Gateway)
-
-```http
-GET /api/accounts/{id}
-```
-
-### Transactions
-
-```http
-POST /api/transactions
-```
-
----
-
-## 🚀 Features
-
-* Microservices with independent deployment
-* JWT-secured APIs
-* Centralized routing via API Gateway
-* Service discovery via Eureka
-* Scalable and loosely coupled architecture
-* DTOs for service communication
-
----
-
-## 🧪 Future Improvements
-
-* Dockerize all services with Docker Compose
-* Add circuit breaker with Resilience4j
-* Implement distributed tracing using Zipkin
-* Include Swagger/OpenAPI documentation
-
----
-
-## 🙌 Author
-
-**Saurav Daruka**
-
-* 💼 [LinkedIn](https://www.linkedin.com/in/sauravdaruka)
-* 📧 [saurav.daruka@gmail.com](mailto:saurav.daruka@gmail.com)
-
-```
+[Saurav Daruka](https://www.linkedin.com/in/sauravdaruka/)
